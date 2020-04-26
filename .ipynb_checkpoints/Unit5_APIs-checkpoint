@@ -1,0 +1,496 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import os\n",
+    "import plaid\n",
+    "import requests\n",
+    "import datetime\n",
+    "import json\n",
+    "import pandas as pd\n",
+    "%matplotlib inline"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def pretty_print_response(response):\n",
+    "  print(json.dumps(response, indent=4, sort_keys=True))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "PLAID_CLIENT_ID = os.getenv('PLAID_CLIENT_ID')\n",
+    "PLAID_SECRET = os.getenv('PLAID_SECRET')\n",
+    "PLAID_PUBLIC_KEY = os.getenv('PLAID_PUBLIC_KEY')\n",
+    "PLAID_ENV = os.getenv('PLAID_ENV', 'sandbox')\n",
+    "PLAID_PRODUCTS = os.getenv('PLAID_PRODUCTS', 'transactions')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Plaid Access Token\n",
+    "\n",
+    "In this section, you will use the plaid-python api to generate the correct authentication tokens to access data in the free developer Sandbox. This mimics how you might connect to your own account or a customer account, but due to privacy issues, this homework will only require connecting to and analyzing the fake data from the developer sandbox that Plaid provides. \n",
+    "\n",
+    "Complete the following steps to generate an access token:\n",
+    "1. Create a client to connect to plaid\n",
+    "2. Use the client to generate a public token and request the following items: \n",
+    "['transactions', 'income', 'assets']\n",
+    "3. Exchange the public token for an access token\n",
+    "4. Test the access token by requesting and printing the available test accounts"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 1. Create a client to connect to plaid"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Select an institution for processing\n",
+    "INSTITUTION_ID = \"ins_109508\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{'institutions': [{'country_codes': ['US'],\n",
+       "   'credentials': [{'label': 'Username', 'name': 'username', 'type': 'text'},\n",
+       "    {'label': 'Password', 'name': 'password', 'type': 'password'}],\n",
+       "   'has_mfa': True,\n",
+       "   'input_spec': 'fixed',\n",
+       "   'institution_id': 'ins_112060',\n",
+       "   'mfa': ['code', 'list', 'questions', 'selections'],\n",
+       "   'mfa_code_type': 'numeric',\n",
+       "   'name': '1st Bank (Broadus, MT) - Personal',\n",
+       "   'oauth': False,\n",
+       "   'products': ['assets',\n",
+       "    'auth',\n",
+       "    'balance',\n",
+       "    'transactions',\n",
+       "    'income',\n",
+       "    'identity'],\n",
+       "   'routing_numbers': []},\n",
+       "  {'country_codes': ['US'],\n",
+       "   'credentials': [{'label': 'Username', 'name': 'username', 'type': 'text'},\n",
+       "    {'label': 'Password', 'name': 'password', 'type': 'password'}],\n",
+       "   'has_mfa': True,\n",
+       "   'input_spec': 'fixed',\n",
+       "   'institution_id': 'ins_112062',\n",
+       "   'mfa': ['code', 'list', 'questions', 'selections'],\n",
+       "   'mfa_code_type': 'numeric',\n",
+       "   'name': '1st Constitution Bank - Personal',\n",
+       "   'oauth': False,\n",
+       "   'products': ['assets',\n",
+       "    'auth',\n",
+       "    'balance',\n",
+       "    'transactions',\n",
+       "    'income',\n",
+       "    'identity'],\n",
+       "   'routing_numbers': []}],\n",
+       " 'request_id': 'YAEFrBXSmpND38N',\n",
+       " 'total': 11448}"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Create client object\n",
+    "client = plaid.Client(client_id=PLAID_CLIENT_ID, secret=PLAID_SECRET, public_key=PLAID_PUBLIC_KEY, environment='sandbox')\n",
+    "\n",
+    "# Get institutions\n",
+    "client.Institutions.get(2)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 2. Generate a public token"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Create public token to be exchanged for institution access token\n",
+    "create_tkn_response = client.Sandbox.public_token.create(INSTITUTION_ID, ['transactions','income','assets'])\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 3. Exchange the public token for an access token"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Exchange public token for access token\n",
+    "exchange_response = client.Item.public_token.exchange(create_tkn_response['public_token'])\n",
+    "\n",
+    "# Store access token as variable\n",
+    "access_token = exchange_response['access_token']"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 4. Fetch Accounts"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{'accounts': [{'account_id': 'ZVX6dj6qowUjxaP8aM9DFjmyyXPkvLigGaelb',\n",
+       "   'balances': {'available': 100,\n",
+       "    'current': 110,\n",
+       "    'iso_currency_code': 'USD',\n",
+       "    'limit': None,\n",
+       "    'unofficial_currency_code': None},\n",
+       "   'mask': '0000',\n",
+       "   'name': 'Plaid Checking',\n",
+       "   'official_name': 'Plaid Gold Standard 0% Interest Checking',\n",
+       "   'subtype': 'checking',\n",
+       "   'type': 'depository'},\n",
+       "  {'account_id': 'MMv6EZ67a9ieg4DE4xMvfWMeeDVZdxi91XLyz',\n",
+       "   'balances': {'available': 200,\n",
+       "    'current': 210,\n",
+       "    'iso_currency_code': 'USD',\n",
+       "    'limit': None,\n",
+       "    'unofficial_currency_code': None},\n",
+       "   'mask': '1111',\n",
+       "   'name': 'Plaid Saving',\n",
+       "   'official_name': 'Plaid Silver Standard 0.1% Interest Saving',\n",
+       "   'subtype': 'savings',\n",
+       "   'type': 'depository'},\n",
+       "  {'account_id': 'A386q96nD5soQp4Vp83WfpvxE89wJrC15L9Pa',\n",
+       "   'balances': {'available': None,\n",
+       "    'current': 1000,\n",
+       "    'iso_currency_code': 'USD',\n",
+       "    'limit': None,\n",
+       "    'unofficial_currency_code': None},\n",
+       "   'mask': '2222',\n",
+       "   'name': 'Plaid CD',\n",
+       "   'official_name': 'Plaid Bronze Standard 0.2% Interest CD',\n",
+       "   'subtype': 'cd',\n",
+       "   'type': 'depository'},\n",
+       "  {'account_id': 'GPvAjkAQrbUDR1Vm1jPJUpbnq8Ral7C1oK63Z',\n",
+       "   'balances': {'available': None,\n",
+       "    'current': 410,\n",
+       "    'iso_currency_code': 'USD',\n",
+       "    'limit': 2000,\n",
+       "    'unofficial_currency_code': None},\n",
+       "   'mask': '3333',\n",
+       "   'name': 'Plaid Credit Card',\n",
+       "   'official_name': 'Plaid Diamond 12.5% APR Interest Credit Card',\n",
+       "   'subtype': 'credit card',\n",
+       "   'type': 'credit'},\n",
+       "  {'account_id': 'nVaeBJe5qmUnr9Ao9VDdInxzDGkjAbu6Q9AbD',\n",
+       "   'balances': {'available': 43200,\n",
+       "    'current': 43200,\n",
+       "    'iso_currency_code': 'USD',\n",
+       "    'limit': None,\n",
+       "    'unofficial_currency_code': None},\n",
+       "   'mask': '4444',\n",
+       "   'name': 'Plaid Money Market',\n",
+       "   'official_name': 'Plaid Platinum Standard 1.85% Interest Money Market',\n",
+       "   'subtype': 'money market',\n",
+       "   'type': 'depository'},\n",
+       "  {'account_id': 'bVvr8jrxbeUw7kbRk6eycwrmVxdZB7UV7nmqr',\n",
+       "   'balances': {'available': None,\n",
+       "    'current': 320.76,\n",
+       "    'iso_currency_code': 'USD',\n",
+       "    'limit': None,\n",
+       "    'unofficial_currency_code': None},\n",
+       "   'mask': '5555',\n",
+       "   'name': 'Plaid IRA',\n",
+       "   'official_name': None,\n",
+       "   'subtype': 'ira',\n",
+       "   'type': 'investment'},\n",
+       "  {'account_id': 'mVd7r975lWUPKxXGx3MyCPvwV6zD7EfLXegJ3',\n",
+       "   'balances': {'available': None,\n",
+       "    'current': 23631.9805,\n",
+       "    'iso_currency_code': 'USD',\n",
+       "    'limit': None,\n",
+       "    'unofficial_currency_code': None},\n",
+       "   'mask': '6666',\n",
+       "   'name': 'Plaid 401k',\n",
+       "   'official_name': None,\n",
+       "   'subtype': '401k',\n",
+       "   'type': 'investment'},\n",
+       "  {'account_id': 'ylLyAbyVP9HlzRqaRMyQSLDBWPvzRZCywP4AL',\n",
+       "   'balances': {'available': None,\n",
+       "    'current': 65262,\n",
+       "    'iso_currency_code': 'USD',\n",
+       "    'limit': None,\n",
+       "    'unofficial_currency_code': None},\n",
+       "   'mask': '7777',\n",
+       "   'name': 'Plaid Student Loan',\n",
+       "   'official_name': None,\n",
+       "   'subtype': 'student',\n",
+       "   'type': 'loan'}],\n",
+       " 'item': {'available_products': ['auth',\n",
+       "   'balance',\n",
+       "   'credit_details',\n",
+       "   'identity',\n",
+       "   'investments',\n",
+       "   'liabilities'],\n",
+       "  'billed_products': ['assets', 'income', 'transactions'],\n",
+       "  'consent_expiration_time': None,\n",
+       "  'error': None,\n",
+       "  'institution_id': 'ins_109508',\n",
+       "  'item_id': 'oV4QxLQ5KZUQAP1zPM6vFQwGmEGzDXIR5XmXP',\n",
+       "  'webhook': ''},\n",
+       " 'request_id': 'iSv4joqUUhEwcIT'}"
+      ]
+     },
+     "execution_count": 18,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# YOUR CODE HERE\n",
+    "client.Accounts.get(access_token)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Account Transactions with Plaid\n",
+    "\n",
+    "In this section, you will use the Plaid Python SDK to connect to the Developer Sandbox account and grab a list of transactions. You will need to complete the following steps:\n",
+    "\n",
+    "\n",
+    "1. Use the access token to fetch the transactions for the last 90 days\n",
+    "2. Print the categories for each transaction type\n",
+    "3. Create a new DataFrame using the following fields from the JSON transaction data: `date, name, amount, category`. (For categories with more than one label, just use the first category label in the list)\n",
+    "4. Convert the data types to the appropriate types (i.e. datetimeindex for the date and float for the amount)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 1. Fetch the Transactions for the last 90 days"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# YOUR CODE HERE"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 2. Print the categories for each transaction"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# YOUR CODE HERE"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 3. Create a new DataFrame using the following fields from the JSON transaction data: date, name, amount, category. \n",
+    "\n",
+    "(For categories with more than one label, just use the first category label in the list)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# YOUR CODE HERE"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 4. Convert the data types to the appropriate types \n",
+    "\n",
+    "(i.e. datetimeindex for the date and float for the amount)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# YOUR CODE HERE"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Income Analysis with Plaid\n",
+    "\n",
+    "In this section, you will use the Plaid Sandbox to complete the following:\n",
+    "1. Determine the previous year's gross income and print the results\n",
+    "2. Determine the current monthly income and print the results\n",
+    "3. Determine the projected yearly income and print the results"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# YOUR CODE HERE"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Budget Analysis\n",
+    "In this section, you will use the transactions DataFrame to analyze the customer's budget\n",
+    "\n",
+    "1. Calculate the total spending per category and print the results (Hint: groupby or count transactions per category)\n",
+    "2. Generate a bar chart with the number of transactions for each category \n",
+    "3. Calculate the expenses per month\n",
+    "4. Plot the total expenses per month"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Calculate the expenses per category"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# YOUR CODE HERE"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Calculate the expenses per month"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# YOUR CODE HERE"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernel_info": {
+   "name": "dev"
+  },
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.1"
+  },
+  "nteract": {
+   "version": "0.12.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
