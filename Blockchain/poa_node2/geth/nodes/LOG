@@ -1,0 +1,74 @@
+=============== Jul 30, 2020 (EDT) ===============
+23:32:33.637244 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:32:33.641231 db@open opening
+23:32:33.644259 version@stat F·[] S·0B[] Sc·[]
+23:32:33.645254 db@janitor F·2 G·0
+23:32:33.645254 db@open done T·4.0224ms
+23:32:34.151868 db@close closing
+23:32:34.156886 db@close done T·5.0179ms
+=============== Jul 30, 2020 (EDT) ===============
+23:33:30.732753 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:33:30.732753 version@stat F·[] S·0B[] Sc·[]
+23:33:30.732753 db@open opening
+23:33:30.732753 journal@recovery F·1
+23:33:30.734747 journal@recovery recovering @1
+23:33:30.740731 memdb@flush created L0@2 N·7 S·288B "loc..seq,v7":"version,v1"
+23:33:30.742759 version@stat F·[1] S·288B[288B] Sc·[0.25]
+23:33:30.749708 db@janitor F·3 G·0
+23:33:30.749708 db@open done T·16.9548ms
+23:33:32.769425 db@close closing
+23:33:32.776302 db@close done T·6.8778ms
+=============== Jul 30, 2020 (EDT) ===============
+23:34:43.269973 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:34:43.269973 version@stat F·[1] S·288B[288B] Sc·[0.25]
+23:34:43.269973 db@open opening
+23:34:43.269973 journal@recovery F·1
+23:34:43.271968 journal@recovery recovering @3
+23:34:43.277953 memdb@flush created L0@5 N·2 S·168B "loc..seq,v10":"loc..seq,v9"
+23:34:43.280945 version@stat F·[2] S·456B[456B] Sc·[0.50]
+23:34:43.286928 db@janitor F·4 G·0
+23:34:43.286928 db@open done T·16.9546ms
+23:34:44.807998 db@close closing
+23:34:44.815841 db@close done T·7.8432ms
+=============== Jul 30, 2020 (EDT) ===============
+23:36:00.652286 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:36:00.653283 version@stat F·[2] S·456B[456B] Sc·[0.50]
+23:36:00.653283 db@open opening
+23:36:00.653283 journal@recovery F·1
+23:36:00.655278 journal@recovery recovering @6
+23:36:00.661262 memdb@flush created L0@8 N·2 S·168B "loc..seq,v13":"loc..seq,v12"
+23:36:00.663257 version@stat F·[3] S·624B[624B] Sc·[0.75]
+23:36:00.673231 db@janitor F·5 G·0
+23:36:00.673231 db@open done T·19.9475ms
+23:36:01.193842 db@close closing
+23:36:01.201852 db@close done T·8.0096ms
+=============== Jul 30, 2020 (EDT) ===============
+23:36:41.287299 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:36:41.288296 version@stat F·[3] S·624B[624B] Sc·[0.75]
+23:36:41.288296 db@open opening
+23:36:41.288296 journal@recovery F·1
+23:36:41.290290 journal@recovery recovering @9
+23:36:41.297303 memdb@flush created L0@11 N·6 S·275B "loc..seq,v20":"n:\xc1..ong,v19"
+23:36:41.299266 version@stat F·[4] S·899B[899B] Sc·[1.00]
+23:36:41.306247 db@janitor F·6 G·0
+23:36:41.306247 db@open done T·17.951ms
+23:36:41.306247 table@compaction L0·4 -> L1·0 S·899B Q·21
+23:36:41.317223 table@build created L1@14 N·8 S·307B "loc..seq,v20":"version,v1"
+23:36:41.317223 version@stat F·[0 1] S·307B[0B 307B] Sc·[0.00 0.00]
+23:36:41.319212 table@compaction committed F-3 S-592B Ke·0 D·9 T·11.9664ms
+23:36:41.319212 table@remove removed @8
+23:36:41.320210 table@remove removed @5
+23:36:41.320210 table@remove removed @2
+23:36:41.330183 db@close closing
+23:36:41.340156 db@close done T·9.9735ms
+=============== Jul 30, 2020 (EDT) ===============
+23:37:07.420754 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+23:37:07.420754 version@stat F·[0 1] S·307B[0B 307B] Sc·[0.00 0.00]
+23:37:07.420754 db@open opening
+23:37:07.420754 journal@recovery F·1
+23:37:07.422778 journal@recovery recovering @12
+23:37:07.428731 memdb@flush created L0@15 N·1 S·159B "loc..seq,v22":"loc..seq,v22"
+23:37:07.431723 version@stat F·[1 1] S·466B[159B 307B] Sc·[0.25 0.00]
+23:37:07.441696 db@janitor F·5 G·1
+23:37:07.441696 db@janitor removing table-11
+23:37:07.441696 db@open done T·20.9423ms
