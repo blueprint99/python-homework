@@ -1,6 +1,6 @@
 # ZBank Proof of Authority Development Chain
 ## Setting up the network
-![alt text](./puppeth_config.JPG "Title")
+![alt text](../puppeth_config.JPG "Title")
 
 
 The image above provides step by step istructions from:
@@ -34,25 +34,3 @@ Notes:
 --rpc
 
 Node2 Command: ./geth --datadir poa_node2 --unlock "0x696e6c2a43e68646de6194d75e0f6ce074fa4f92" --mine --port 30304 --bootnodes enode://3b8844805e135a44fdf35ab7d274644c97bb518e945d4453a916fa73a79c054e753e3db93397a276b86d399bc6c84c28daa34376efcefc6f36b342eb5a4d1e62@69.200.225.229:30303 --ipcdisable
-
-### Create a repository, and instructions for launching the chain
-
-* Create a `README.md` in your project directory and create documentation that explains how to start the network.
-
-* Remember to include any environment setup instructions and dependencies.
-
-* Be sure to include all of the `geth` flags required to get both nodes to mine and explain what they mean.
-
-* Explain the configuration of the network, such as it's blocktime, chain ID, account passwords, ports, etc.
-
-* Explain how to connect MyCrypto to your network and demonstrate (via screenshots and steps) and send a transaction.
-
-* Upload the code, including the `networkname.json` and node folders.
-
-### Remember, *never* share your mainnet private keys! This is a testnet, so coins have no value here!
-
-### Challenge mode
-
-* Create a separate `bootnode` dedicated to connecting peers together
-
-* There will be a new DevOps engineer joining the team, add an additional sealer address to the network on the fly!
