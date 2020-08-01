@@ -58,6 +58,8 @@ Steps: In MyCrypto
 
 Once connection is stablished in private network the accounts created can be logged into by using the keystore file located in the each specific node directory using the password set up during node creation.  
 Once logged in a transaction can ge entered
-
+## Transactions sent from node1 account
 ![](screenshots/Transaction_sent.JPG "Node1 send")
+
+## Transactions received from node2 account
 ![](screenshots/Transaction_received.JPG "Node2 receive")
