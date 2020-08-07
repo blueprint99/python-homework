@@ -2,12 +2,15 @@ import subprocess
 import pandas as pd
 import os
 import json
-from bit import wif_to_key
+from bit import wif_to_key, PrivateKey,PrivateKeyTestnet
 from dotenv import load_dotenv
 from web3 import Web3
 from web3.middleware import geth_poa_middleware
 from eth_account import Account
 from constants import *
+
+w3 = Web3(Web3.HTTPProvider("http://127.0.0.1:8545"))
+w3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
 def derive_wallets ():
     types= [ETH, BTCTEST, BTC]
@@ -45,3 +48,13 @@ def create_raw_tx(coin, account, recipient, amount):
         }
     elif coin==BTCTEST:
         return account.create_transaction([(to, amount, BTC)])
+
+def send_tx(coin, account, to, amount):
+    tx = create_raw_tx(coin,account, to, amount)
+    if coin==ETH:
+        signed_tx = account.sign_transaction(tx)
+        result=w3.eth.sendRawTransaction(signed_tx.rawTransaction)
+        return result.hex()
+    elif coin==BTCTEST:
+        result=account.send([(to, amount, BTC)])
+        return result
