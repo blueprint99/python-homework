@@ -46,7 +46,7 @@ address payable _one
 address payable _two
 address payable _three
 
-Each address is associated with the employees that the will receive an equal portion of Ether.
+Each address is associated with the employees that the will receive the percentage of Ether assigned per tier.
 
 
 Post deployment:
