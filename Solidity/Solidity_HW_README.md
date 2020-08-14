@@ -36,7 +36,7 @@ Post deployment:
 
 * Contract Address: 0x5b66716e9e8a87db3be0e1af9ff5cff0d2046b08
 
-![](../TieredProfitSplitter.JPG "TieredProfitSplitter")
+![](TieredProfitSplitter.JPG)
 	
 When the contract is deployed for this contract the constructor function that accepts three addresses:
 
@@ -63,7 +63,7 @@ Post deployment:
 
 * Contract Address: 0x9d87f7e2f47fb78ae0c7931c74bc197a9aa7fab4
 
-![](../profitsplitter_1st_transaction.JPG, "profitsplitter_1st_transaction")
+![](profitsplitter_1st_transaction.JPG)
 
 When the contract is deployed for this contract the constructor function that accepts one address, which will be the address where the shares will be deposited.
 
