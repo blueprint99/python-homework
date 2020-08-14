@@ -12,10 +12,12 @@ All the contracts descrived below are deployed in the the Kovan test network.
 
 ![](AssociateProfitSplitter.JPG)
 
-When the contract is deployed for this contract the constructor function that accepts three addresses:
+When the contract is deployed the constructor function of this contract requests three addresses, which will be the addresses the the Ether is distributed to:
 
 address payable _one
+
 address payable _two
+
 address payable _three
 
 Each address is associated with the employees that the will receive an equal portion of Ether.
