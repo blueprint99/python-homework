@@ -1,4 +1,4 @@
-# Solidity Contract HW!
+# Solidity Contract HW
 
 All the contracts descrived below are deployed in the the Kovan test network.
 
@@ -10,7 +10,7 @@ All the contracts descrived below are deployed in the the Kovan test network.
 		
 * Contract Address:0xd8dea9e9857812beccab53700dc7651a08fbf37d
 
-![](Solidity/AssociateProfitSplitter.JPG "AssociateProfitSplitter")
+![](AssociateProfitSplitter.JPG)
 
 When the contract is deployed for this contract the constructor function that accepts three addresses:
 
