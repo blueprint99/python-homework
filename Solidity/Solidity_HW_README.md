@@ -10,7 +10,7 @@ All the contracts descrived below are deployed in the the Kovan test network.
 		
 * Contract Address:0xd8dea9e9857812beccab53700dc7651a08fbf37d
 
-![](/AssociateProfitSplitter.JPG "AssociateProfitSplitter")
+![](../AssociateProfitSplitter.JPG "AssociateProfitSplitter")
 
 When the contract is deployed for this contract the constructor function that accepts three addresses:
 
@@ -36,7 +36,7 @@ Post deployment:
 
 * Contract Address: 0x5b66716e9e8a87db3be0e1af9ff5cff0d2046b08
 
-![](/TieredProfitSplitter.JPG "TieredProfitSplitter")
+![](../TieredProfitSplitter.JPG "TieredProfitSplitter")
 	
 When the contract is deployed for this contract the constructor function that accepts three addresses:
 
@@ -59,11 +59,11 @@ Post deployment:
 
 ### DeferredEquityPlan
 
-	* Contract Description: This contract models traditional company stock plans. This contract will automatically manage 1000 shares with an annual distribution of 250 over 4 years for a single employee.
+* Contract Description: This contract models traditional company stock plans. This contract will automatically manage 1000 shares with an annual distribution of 250 over 4 years for a single employee.
 
-	* Contract Address: 0x9d87f7e2f47fb78ae0c7931c74bc197a9aa7fab4
+* Contract Address: 0x9d87f7e2f47fb78ae0c7931c74bc197a9aa7fab4
 
-![](/profitsplitter_1st_transaction.JPG, "profitsplitter_1st_transaction")
+![](../profitsplitter_1st_transaction.JPG, "profitsplitter_1st_transaction")
 
 When the contract is deployed for this contract the constructor function that accepts one address, which will be the address where the shares will be deposited.
 
