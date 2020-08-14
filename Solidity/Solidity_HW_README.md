@@ -4,7 +4,7 @@ All the contracts descrived below are deployed in the the Kovan test network.
 
 ## Contracts
 
-### AssociateProfitSplitter.sol
+### AssociateProfitSplitter
 
 	* Contract Description: This contract will accept Ether into the contract and divide the Ether evenly among the associate level employees. This will allow the Human Resources department to pay employees quickly and efficiently.
 	* Kovan Contract Address: https://kovan.etherscan.io/tx/0xce1dcee897aa49a8ec64d75a158242adb9ffa4029555ea785cb0f07d64fcdd1c
@@ -17,7 +17,7 @@ All the contracts descrived below are deployed in the the Kovan test network.
 
 
 
-### Starter-Code/TieredProfitSplitter.sol
+### TieredProfitSplitter
 
 	* Contract Description: This contract will distribute different percentages of incoming Ether to employees at different tiers/levels. For example, the CEO gets paid 60%, CTO 25%, and Bob gets 15%.
 	* Kovan Contract Address: https://kovan.etherscan.io/tx/0x00867ae236d9d1683aba89597ad73706deb66f56e9510a614d6cb7b8de633b14
@@ -28,7 +28,7 @@ All the contracts descrived below are deployed in the the Kovan test network.
 	
 	* `deposit` -- This function will allow ether deposits. It will proportionally split the amount deposited and distribute it based on the persentage assigned to eache address. Since solidity does not handle float/decimals the contract transfer any remainer back to the `msg.sender` (through the fallback function). 
 	
-### DeferredEquityPlan.sol
+### DeferredEquityPlan
 
 	* Contract Description: This contract models traditional company stock plans. This contract will automatically manage 1000 shares with an annual distribution of 250 over 4 years for a single employee.
 	* Kovan Contract Address: https://kovan.etherscan.io/tx/0xa3b07d2a30eeec938c5fcb296bb4a3d97aabde547b14616a258b5f82d0733638
